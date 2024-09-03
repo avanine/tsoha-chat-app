@@ -23,14 +23,14 @@ A chat application built with Flask and PostgreSQL, featuring categories, thread
 - Add and delete categories.
 - Create private categories and specify which users can access them.
 
-### Tech Stack
+## Tech Stack
 
 - **Backend:** Python, Flask
 - **Database:** PostgreSQL
 - **Frontend:** HTML, CSS, Bootstrap
 - **Other Tools:** SQLAlchemy for database ORM, Jinja2 for templating
 
-### Database Structure:
+## Database Structure:
 
 
 ![database-structure](https://github.com/user-attachments/assets/8dd78b49-ef99-46eb-9ca7-c64886879815)
