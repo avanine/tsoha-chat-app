@@ -30,7 +30,7 @@ A chat application built with Flask and PostgreSQL, featuring categories, thread
 - **Frontend:** HTML, CSS, Bootstrap
 - **Other Tools:** SQLAlchemy for database ORM, Jinja2 for templating
 
-## Database Structure:
+## Database Structure
 
 
 ![database-structure](https://github.com/user-attachments/assets/8dd78b49-ef99-46eb-9ca7-c64886879815)
