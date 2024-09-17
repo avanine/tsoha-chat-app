@@ -6,9 +6,43 @@ A chat application built with Flask and PostgreSQL, featuring categories, thread
 
 ## Table of Contents
 
+- [How to Test](#how-to-test)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Database Structure](#database-structure)
+
+## How to Test
+
+_The app was originally deployed to Fly.io, but due to very unclear pricing, I have taken it down. This means that the app will have to be tested locally._
+
+1. Clone the repository and navigate to the root directory
+
+2. Create a ``.env`` file with the following variables, changing the values to your own
+
+```
+DATABASE_URL=postgresql:///yourlocaldatabaseaddress
+SECRET_KEY=supersecret
+```
+
+3. Activate Python's virtual environment and install dependencies
+
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install -r ./requirements.txt
+```
+
+4. Specify database schema
+
+```
+psql < schema.sql
+```
+
+5. Run the app 🦄
+
+```
+flask run
+```
 
 ## Features
 
