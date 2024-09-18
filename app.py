@@ -1,15 +1,7 @@
 from os import getenv
-from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text
+from flask import Flask
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
-db = SQLAlchemy(app)
+app.secret_key = getenv("SECRET_KEY")
 
-@app.route("/")
-def index():
-    result = db.session.execute(text("SELECT username FROM users"))
-    users = result.fetchall()
-    counter = len(users)
-    return render_template("index.html", count=counter)
+import routes # pylint: disable=unused-import
