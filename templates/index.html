@@ -2,3 +2,35 @@
 <h1>Chat App</h1>
 <b>Welcome</b>
 <h6>Registered users: {{ count }}</h6>
+
+<h3>Register</h3>
+<form action="/register" method="POST">
+  <label for="registerUsername">Username</label>
+  <input type="text" name="username" id="registerUsername" required />
+  <label for="registerPassword">Password</label>
+  <input type="password" name="password" id="registerPassword" required />
+  <label for="registerConfirmPassword">Confirm password</label>
+  <input
+    type="password"
+    name="confirm_password"
+    id="registerConfirmPassword"
+    required
+  />
+  <input type="checkbox" name="role" id="registerAdminCheck" />
+  <label for="registerAdminCheck">Admin</label>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  document.querySelector("form").addEventListener("submit", function (event) {
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById(
+      "registerConfirmPassword"
+    ).value;
+
+    if (password !== confirmPassword) {
+      event.preventDefault();
+      alert("Passwords do not match!");
+    }
+  });
+</script>
