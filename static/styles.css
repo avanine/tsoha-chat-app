@@ -1,0 +1,57 @@
+html, body {
+    background-color: #f5f5f5;
+}
+
+h1, h2, h3 {
+    color: #36454F;
+    text-align: center;
+}
+
+a {
+    color: black;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+}
+
+.btn-primary, .btn-primary:hover {
+    background-color: pink;
+    border-color: pink;
+}
+
+.form-check-input:checked {
+    background-color: pink;
+    border-color: pink;
+}
+
+.form-container {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 0 15px 15px 15px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 70%;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+}
+
+.nav-link, .nav-link:hover {
+    color: #36454F;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f5f5f5;
+    position: relative;
+}
