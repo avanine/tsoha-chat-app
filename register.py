@@ -14,11 +14,11 @@ def add_user():
     existing_user = check_username.fetchone()
 
     if existing_user:
-        flash('Username already in use. Please choose another one.')
+        flash('Username already in use. Please choose another one.', 'danger')
         return redirect("/")
 
     if password != confirm_password:
-        flash('Passwords do not match!')
+        flash('Passwords do not match!', 'danger')
         return redirect("/")
 
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
