@@ -4,6 +4,15 @@
 
 A chat application built with Flask and PostgreSQL, featuring categories, threads, and messages. Categories contain discussion threads, which consist of messages. Users must be logged in to view and participate in discussions. The app supports both regular users and administrators, with admins having additional privileges like managing categories and creating private categories.
 
+## Table of Contents
+
+- [Current Progress](#current-progress)
+- [Next Steps](#next-steps)
+- [How to Test](#how-to-test)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Database Structure](#database-structure)
+
 ## Current Progress
 
 Visitors are able to register either as an admin or regular user, and log in with the username and password that they created. Possible error messages: username already in use, passwords don't match, incorrect username or password.
@@ -33,13 +42,6 @@ If they choose to create a private category, they are able to select the users t
 - functionality for adding threads and messages
 - editing and deleting threads and messages
 - search functionality
-
-## Table of Contents
-
-- [How to Test](#how-to-test)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Database Structure](#database-structure)
 
 ## How to Test
 
