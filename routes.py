@@ -3,6 +3,8 @@ from sqlalchemy.sql import text
 from app import app
 import register
 import login
+import category
+import user
 from db import db
 
 @app.route("/")
@@ -32,4 +34,15 @@ def logout():
 def dashboard_view():
     if 'username' not in session:
         return redirect("/")
-    return render_template('dashboard.html')
+    categories = category.fetch_categories(session['user_id'])
+    users = user.fetch_all_users()
+    return render_template('dashboard.html', categories=categories, users=users)
+
+@app.route('/create-category', methods=['POST'])
+def create_new_category():
+    return category.create_category()
+
+@app.route('/category/<int:category_id>')
+def category_page(category_id):
+    selected_category = category.get_category(category_id)
+    return render_template('category.html', category=selected_category)

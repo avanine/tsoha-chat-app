@@ -24,7 +24,7 @@
       {% for category in categories %}
       <tr>
         <td>
-          <a href="#">{{ category['category_name'] }}</a>
+          <a href="{{ url_for('category_page', category_id=category['category_id']) }}">{{ category['category_name'] }}</a>
         </td>
         <td>{{ category.thread_count }}</td>
         <td>{{ category.message_count }}</td>
@@ -80,6 +80,19 @@
             />
             <label class="form-check-label" for="private">Private</label>
           </div>
+          <div class="mb-3" id="userSelectContainer" style="display: none">
+            <label for="users" class="form-label"
+              >Select users to give access to</label
+            >
+            <select id="users" name="users" class="form-select" multiple>
+              {% for user in users %}
+              <option value="{{ user.user_id }}">{{ user.username }}</option>
+              {% endfor %}
+            </select>
+            <small class="form-text text-muted">
+              Hold down the Ctrl or ⌘ button to select multiple users.
+            </small>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -93,6 +106,54 @@
     </div>
   </div>
 </div>
+<script>
+  document.getElementById("private").addEventListener("change", function () {
+    const userSelectContainer = document.getElementById("userSelectContainer");
+    if (this.checked) {
+      userSelectContainer.style.display = "block";
+    } else {
+      userSelectContainer.style.display = "none";
+    }
+  });
+
+  document
+    .getElementById("saveCategoryBtn")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const isPrivate = document.getElementById("private").checked;
+      const selectedUsers = Array.from(
+        document.getElementById("users").selectedOptions
+      ).map((option) => option.value)
+      .filter(userId => userId);
+
+      const data = {
+        title: title,
+        private: isPrivate,
+        users: selectedUsers,
+      };
+
+      fetch("/create-category", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            location.reload();
+          } else {
+            alert("Error creating category");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+</script>
 {% else %}
 <p>You have to log in to see this page.</p>
 <a href="/login" class="btn btn-primary btn-sm">Log In</a>

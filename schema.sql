@@ -2,4 +2,4 @@ CREATE TABLE users (id SERIAL PRIMARY KEY, username VARCHAR(50) NOT NULL UNIQUE,
 CREATE TABLE categories (id SERIAL PRIMARY KEY, title VARCHAR(255) NOT NULL, user_id INTEGER REFERENCES users(id), private BOOLEAN, visible BOOLEAN, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE threads (id SERIAL PRIMARY KEY, title VARCHAR(255) NOT NULL, content TEXT NOT NULL, user_id INTEGER REFERENCES users(id), category_id INTEGER REFERENCES categories(id), visible BOOLEAN, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE messages (id SERIAL PRIMARY KEY, content TEXT NOT NULL, user_id INTEGER REFERENCES users(id), thread_id INTEGER REFERENCES threads(id), visible BOOLEAN, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, last_modified TIMESTAMP);
-CREATE TABLE private_categories_permissions (id SERIAL PRIMARY KEY, category_id INTEGER REFERENCES categories(id), user_id INTEGER REFERENCES users(id));
+CREATE TABLE private_categories_permissions (category_id INTEGER REFERENCES categories(id), user_id INTEGER REFERENCES users(id));
