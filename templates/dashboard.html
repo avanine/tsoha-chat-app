@@ -93,6 +93,40 @@
     </div>
   </div>
 </div>
+<script>
+  document
+    .getElementById("saveCategoryBtn")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const isPrivate = document.getElementById("private").checked;
+
+      const data = {
+        title: title,
+        private: isPrivate,
+      };
+
+      fetch("/create-category", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            location.reload();
+          } else {
+            alert("Error creating category");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+</script>
 {% else %}
 <p>You have to log in to see this page.</p>
 <a href="/login" class="btn btn-primary btn-sm">Log In</a>
