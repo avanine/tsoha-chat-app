@@ -4,6 +4,36 @@
 
 A chat application built with Flask and PostgreSQL, featuring categories, threads, and messages. Categories contain discussion threads, which consist of messages. Users must be logged in to view and participate in discussions. The app supports both regular users and administrators, with admins having additional privileges like managing categories and creating private categories.
 
+## Current Progress
+
+Visitors are able to register either as an admin or regular user, and log in with the username and password that they created. Possible error messages: username already in use, passwords don't match, incorrect username or password.
+
+![image](https://github.com/user-attachments/assets/0c2bffef-bf06-4913-87fa-fbe505c66a92)
+
+After logging in, there is a list of categories that the user has access to, including the amount of threads and messages, as well as the time of last message for each category. Clicking on the category name opens up the category page (not fully done yet). Admins can also see a button for creating a new category.
+
+![image (2)](https://github.com/user-attachments/assets/87c1e7dd-0db5-420d-95ec-6141743517c9)
+
+All users can see their username and role, and log out using the menu at the top right of the page.
+
+![image (3)](https://github.com/user-attachments/assets/031d41d2-6e04-4c89-8489-aa66e8695ed9)
+
+Admin users can create a new public or private category.
+
+![image (4)](https://github.com/user-attachments/assets/1fb72457-e100-46c5-bcfe-92fa0515b7db)
+
+If they choose to create a private category, they are able to select the users that they want to give access to.
+
+![image (5)](https://github.com/user-attachments/assets/4cf3c0a9-8927-4697-a476-575b9bfde76f)
+
+## Next Steps
+
+- delete button for categories
+- view for a single category
+- functionality for adding threads and messages
+- editing and deleting threads and messages
+- search functionality
+
 ## Table of Contents
 
 - [How to Test](#how-to-test)
