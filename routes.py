@@ -4,6 +4,7 @@ from app import app
 import register
 import login
 import category
+import user
 from db import db
 
 @app.route("/")
@@ -34,7 +35,8 @@ def dashboard_view():
     if 'username' not in session:
         return redirect("/")
     categories = category.fetch_categories()
-    return render_template('dashboard.html', categories=categories)
+    users = user.fetch_all_users()
+    return render_template('dashboard.html', categories=categories, users=users)
 
 @app.route('/create-category', methods=['POST'])
 def create_new_category():

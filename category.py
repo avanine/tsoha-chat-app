@@ -1,5 +1,7 @@
+import logging
 from flask import session, request, jsonify
 from sqlalchemy.sql import text
+from sqlalchemy.exc import SQLAlchemyError
 from db import db
 
 def fetch_categories():
@@ -35,19 +37,43 @@ def create_category():
         return jsonify({'success': False, 'message': 'Invalid input data'}), 400
     title = data.get('title')
     private = data.get('private', False)
+    selected_users = data.get('users', [])
     visible = True
 
     if not title:
         return jsonify({'success': False, 'message': 'Title is required'}), 400
 
-    sql = text(
-        "INSERT INTO categories (title, user_id, private, visible) VALUES (:title, :user_id, :private, :visible)")
-    db.session.execute(sql, {
-        'title': title,
-        'user_id': session['user_id'],
-        'private': private,
-        'visible': visible
-    })
-    db.session.commit()
+    selected_users = [user_id for user_id in selected_users if user_id]
 
-    return jsonify({'success': True})
+    try:
+        with db.session.begin():
+            sql = text(
+                "INSERT INTO categories (title, user_id, private, visible) "
+                "VALUES (:title, :user_id, :private, :visible) RETURNING id"
+            )
+            result = db.session.execute(sql, {
+                'title': title,
+                'user_id': session['user_id'],
+                'private': private,
+                'visible': visible
+            })
+            category_id = result.fetchone()[0]
+
+            if private and selected_users:
+                for user_id in selected_users:
+                    insert_permission_sql = text(
+                        "INSERT INTO private_categories_permissions (category_id, user_id) "
+                        "VALUES (:category_id, :user_id)"
+                    )
+                    db.session.execute(insert_permission_sql, {
+                        'category_id': category_id,
+                        'user_id': user_id
+                    })
+
+        db.session.commit()
+        return jsonify({'success': True})
+
+    except SQLAlchemyError as e:
+        logging.error("Database error: %s", e)
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'}), 500
