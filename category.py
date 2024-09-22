@@ -1,5 +1,5 @@
 import logging
-from flask import session, request, jsonify
+from flask import session, request, jsonify, flash, redirect, url_for
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
@@ -80,3 +80,10 @@ def create_category():
         logging.error("Database error: %s", e)
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred'}), 500
+
+def get_category(category_id):
+    category = db.session.execute(text("SELECT * FROM categories WHERE id = :category_id"), {"category_id": category_id}).fetchone()
+    if not category:
+        flash("Category not found.", "danger")
+        return redirect(url_for('dashboard'))
+    return category

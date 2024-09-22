@@ -41,3 +41,8 @@ def dashboard_view():
 @app.route('/create-category', methods=['POST'])
 def create_new_category():
     return category.create_category()
+
+@app.route('/category/<int:category_id>')
+def category_page(category_id):
+    selected_category = category.get_category(category_id)
+    return render_template('category.html', category=selected_category)

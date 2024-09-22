@@ -24,7 +24,7 @@
       {% for category in categories %}
       <tr>
         <td>
-          <a href="#">{{ category['category_name'] }}</a>
+          <a href="{{ url_for('category_page', category_id=category['category_id']) }}">{{ category['category_name'] }}</a>
         </td>
         <td>{{ category.thread_count }}</td>
         <td>{{ category.message_count }}</td>
