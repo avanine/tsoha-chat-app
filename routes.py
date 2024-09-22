@@ -1,7 +1,8 @@
-from flask import render_template, redirect
+from flask import render_template, redirect, session
 from sqlalchemy.sql import text
 from app import app
 import register
+import login
 from db import db
 
 @app.route("/")
@@ -15,3 +16,20 @@ def index():
 def register_user():
     register.add_user()
     return redirect("/")
+
+@app.route("/login", methods=["POST"])
+def login_user():
+    if login.login_user():
+        return redirect("/dashboard")
+    return redirect("/")
+
+@app.route("/logout")
+def logout():
+    del session["username"]
+    return redirect("/")
+
+@app.route('/dashboard')
+def dashboard_view():
+    if 'username' not in session:
+        return redirect("/")
+    return render_template('dashboard.html')
