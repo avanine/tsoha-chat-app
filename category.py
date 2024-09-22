@@ -4,7 +4,7 @@ from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
 
-def fetch_categories():
+def fetch_categories(user_id):
     categories = db.session.execute(text('''
         SELECT
             c.id AS category_id, 
@@ -18,13 +18,16 @@ def fetch_categories():
             threads t ON c.id = t.category_id
         LEFT JOIN 
             messages m ON t.id = m.thread_id
+        LEFT JOIN 
+            private_categories_permissions p ON c.id = p.category_id
         WHERE
-            c.visible = TRUE
+            c.visible = TRUE AND 
+            (c.private = FALSE OR c.user_id = :user_id OR p.user_id = :user_id)
         GROUP BY 
             c.id, c.title
         ORDER BY 
             last_message_timestamp DESC;
-    ''')).fetchall()
+    '''), {'user_id': user_id}).fetchall()
 
     return categories
 

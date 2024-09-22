@@ -34,7 +34,7 @@ def logout():
 def dashboard_view():
     if 'username' not in session:
         return redirect("/")
-    categories = category.fetch_categories()
+    categories = category.fetch_categories(session['user_id'])
     users = user.fetch_all_users()
     return render_template('dashboard.html', categories=categories, users=users)
 
