@@ -46,3 +46,7 @@ def create_new_category():
 def category_page(category_id):
     selected_category = category.get_category(category_id)
     return render_template('category.html', category=selected_category)
+
+@app.route('/delete-category/<int:category_id>', methods=['PATCH'])
+def delete_category(category_id):
+    return category.delete_category(category_id)
