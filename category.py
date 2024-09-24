@@ -87,3 +87,15 @@ def get_category(category_id):
         flash("Category not found.", "danger")
         return redirect(url_for('dashboard'))
     return category
+
+def delete_category(category_id):
+    try:
+        with db.session.begin():
+            sql = text("UPDATE categories SET visible = FALSE WHERE id = :category_id")
+            db.session.execute(sql, {"category_id": category_id})
+        db.session.commit()
+        return {'success': True}
+    except SQLAlchemyError as e:
+        logging.error("Database error: %s", e)
+        db.session.rollback()
+        return {'success': False, 'message': 'An error occurred while deleting the category'}
