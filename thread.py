@@ -17,5 +17,9 @@ def fetch_threads(category_id):
             t.id
         ORDER BY
             MAX(m.created_at) DESC;
-    '''), {'category_id': category_id}).fetchall() 
+    '''), {'category_id': category_id}).fetchall()
     return threads
+
+def get_thread_by_id(thread_id):
+    thread = db.session.execute(text("SELECT * FROM threads WHERE id = :thread_id"), {"thread_id": thread_id}).fetchone()
+    return thread

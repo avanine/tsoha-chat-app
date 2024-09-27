@@ -12,12 +12,9 @@
             Create New Thread
           </button>
         </div>
-        <div class="list-group">
+        <div class="list-group my-4">
           {% if threads %} {% for thread in threads %}
-          <a
-            href="/thread/{{ thread.id }}"
-            class="list-group-item list-group-item-action {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}"
-          >
+          <a href="/category/{{ category.id }}/thread/{{ thread.id }}" class="list-group-item list-group-item-action {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}">
             <div>{{ thread.title }}</div>
             <div>{{ thread.message_count }} messages</div>
           </a>

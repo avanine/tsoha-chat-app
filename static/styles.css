@@ -90,3 +90,17 @@ footer {
     text-align: center;
     margin-top: 150px;
 }
+
+.list-group-item {
+    cursor: pointer;
+    padding: 10px;
+    border: black;
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0 !important;
+}
+
+.active {
+    background-color: pink !important;
+}

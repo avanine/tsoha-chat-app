@@ -38,11 +38,16 @@ def dashboard_view():
 def create_new_category():
     return category.create_category()
 
-@app.route('/category/<int:category_id>')
-def category_page(category_id):
+@app.route('/category/<int:category_id>', defaults={'thread_id': None})
+@app.route('/category/<int:category_id>/thread/<int:thread_id>')
+def category_page(category_id, thread_id):
     selected_category = category.get_category(category_id)
     threads = thread.fetch_threads(category_id)
-    return render_template('category.html', category=selected_category, threads=threads)
+    if not thread_id and threads:
+        selected_thread = threads[0]
+    else:
+        selected_thread = thread.get_thread_by_id(thread_id) if thread_id else None
+    return render_template('category.html', category=selected_category, threads=threads, selected_thread=selected_thread)
 
 @app.route('/delete-category/<int:category_id>', methods=['PATCH'])
 def delete_category(category_id):
