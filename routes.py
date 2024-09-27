@@ -4,6 +4,7 @@ import register
 import login
 import category
 import user
+import thread
 
 @app.route("/")
 def index():
@@ -40,7 +41,8 @@ def create_new_category():
 @app.route('/category/<int:category_id>')
 def category_page(category_id):
     selected_category = category.get_category(category_id)
-    return render_template('category.html', category=selected_category)
+    threads = thread.fetch_threads(category_id)
+    return render_template('category.html', category=selected_category, threads=threads)
 
 @app.route('/delete-category/<int:category_id>', methods=['PATCH'])
 def delete_category(category_id):
