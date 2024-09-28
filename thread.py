@@ -30,7 +30,8 @@ def get_thread_by_id(thread_id):
             t.id, 
             t.title, 
             t.content, 
-            t.created_at, 
+            t.created_at,
+            t.user_id,
             u.username AS creator
         FROM threads t
         JOIN users u ON t.user_id = u.id
