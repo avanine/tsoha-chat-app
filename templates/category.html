@@ -80,7 +80,9 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
           <div class="message-item">
             <p>
               <strong>{{ selected_thread.creator }}</strong> {{
-              selected_thread.content }}
+              selected_thread.content }} {% if selected_thread.last_modified %}
+              <span class="edited-tag"> (Edited)</span>
+              {% endif %}
             </p>
             <p
               class="thread-date small"
@@ -93,7 +95,10 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
             {% if messages_in_thread %} {% for message in messages_in_thread %}
             <div class="message-item">
               <p>
-                <strong>{{ message.creator }}</strong> {{ message.content }}
+                <strong>{{ message.creator }}</strong> {{ message.content }} {%
+                if message.last_modified %}
+                <span class="edited-tag"> (Edited)</span>
+                {% endif %}
               </p>
               <p
                 class="thread-date small"

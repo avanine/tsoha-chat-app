@@ -112,3 +112,9 @@ footer {
 .small {
     font-size: smaller;
 }
+
+.edited-tag {
+    font-style: italic;
+    color: gray;
+    font-size: smaller;
+}

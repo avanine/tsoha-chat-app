@@ -7,7 +7,8 @@ def fetch_messages(thread_id):
             m.id, 
             m.content, 
             u.username AS creator, 
-            m.created_at 
+            m.created_at,
+            m.last_modified
         FROM messages m
         JOIN users u ON m.user_id = u.id
         WHERE m.thread_id = :thread_id AND m.visible = TRUE
