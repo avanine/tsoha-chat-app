@@ -1,4 +1,13 @@
 {% extends "layout.html" %} {% block content %} {% if session.username %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="container mt-4">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
 <div class="container">
   <div class="row">
@@ -8,7 +17,7 @@
           <a href="/dashboard">
             <i class="fas fa-arrow-left"></i> Back to Categories
           </a>
-          <button type="button" class="btn btn-primary ms-4">
+          <button type="button" class="btn btn-primary ms-4" data-bs-toggle="modal" data-bs-target="#createThreadModal">
             Create New Thread
           </button>
         </div>
@@ -28,14 +37,33 @@
     </div>
     <div class="col-8">
       <div class="container my-5">
-        {% if selected_thread %}
         <h2>{{ selected_thread.title }}</h2>
-        {% else %}
-        <!-- TODO: open first thread from the list -->
-        <h1>{{ category.title }}</h1>
-        {% endif %}
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="createThreadModal" tabindex="-1" aria-labelledby="createThreadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createThreadModalLabel">Create New Thread</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-category-id="{{ category['category_id'] }}"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/category/{{ category.id }}/create-thread" method="POST">
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+              <label for="content" class="form-label">Content</label>
+              <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Thread</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endif %} {% endblock %}
