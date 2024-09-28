@@ -10,7 +10,7 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 footer {
@@ -18,9 +18,9 @@ footer {
     padding: 20px;
 }
 
-.btn-primary, .btn-primary:hover {
-    background-color: pink;
-    border-color: pink;
+.btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: pink !important;
+    border-color: pink !important;
 }
 
 .form-check-input:checked {
@@ -75,11 +75,6 @@ footer {
     background-color: transparent;
 }
 
-.threads-header a {
-    text-decoration: none;
-    margin-right: 10px;
-}
-
 .threads-list {
     border-right: 1px solid #ccc;
     padding-right: 20px;
@@ -89,4 +84,23 @@ footer {
 .no-threads {
     text-align: center;
     margin-top: 150px;
+}
+
+.list-group-item {
+    cursor: pointer;
+    padding: 10px;
+    border: black;
+}
+
+.list-group-item:hover {
+    background-color: #f0f0f0 !important;
+}
+
+.list-group-item.active {
+    background-color: pink !important;
+    border-color: pink !important;
+}
+
+.grey-icon {
+    color: grey;
 }
