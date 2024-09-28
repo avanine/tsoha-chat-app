@@ -105,7 +105,7 @@ def update_thread(thread_id):
         new_content = data.get('content')
 
         try:
-            sql = text('UPDATE threads SET title = :title, content = :content WHERE id = :thread_id')
+            sql = text('UPDATE threads SET title = :title, content = :content, last_modified = NOW() WHERE id = :thread_id')
             db.session.execute(sql, {'title': new_title, 'content': new_content, 'thread_id': thread_id})
             db.session.commit()
             return jsonify({'success': True})
