@@ -45,7 +45,7 @@ def category_page(category_id, thread_id):
     selected_category = category.get_category(category_id)
     threads = thread.fetch_threads(category_id)
     if not thread_id and threads:
-        selected_thread = threads[0]
+        selected_thread = thread.get_thread_by_id(threads[0].id)
         messages_in_thread = message.fetch_messages(selected_thread.id)
     else:
         selected_thread = thread.get_thread_by_id(thread_id) if thread_id else None
