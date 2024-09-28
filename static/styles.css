@@ -118,3 +118,12 @@ footer {
     color: gray;
     font-size: smaller;
 }
+
+.speech-bubble {
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    padding: 15px;
+    position: relative;
+    max-width: 80%;
+    display: inline-block;
+}
