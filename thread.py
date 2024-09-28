@@ -1,5 +1,5 @@
 import logging
-from flask import session, request, flash, redirect, url_for
+from flask import session, request, flash, redirect, url_for, jsonify
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
@@ -92,3 +92,26 @@ def delete_thread(thread_id):
         db.session.rollback()
         flash("You are not authorized to delete this thread.", "danger")
         return {'success': False, 'message': 'An error occurred while deleting the thread'}
+
+def update_thread(thread_id):
+    if 'username' not in session:
+        return redirect("/login")
+
+    thread_to_update = get_thread_by_id(thread_id)
+
+    if thread_to_update and thread_to_update.user_id == session['user_id']:
+        data = request.json
+        new_title = data.get('title')
+        new_content = data.get('content')
+
+        try:
+            sql = text('UPDATE threads SET title = :title, content = :content WHERE id = :thread_id')
+            db.session.execute(sql, {'title': new_title, 'content': new_content, 'thread_id': thread_id})
+            db.session.commit()
+            return jsonify({'success': True})
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            logging.error("Database error: %s", e)
+            return jsonify({'success': False, 'message': 'An error occurred while updating the thread'}), 500
+    else:
+        return jsonify({'success': False, 'message': 'You are not authorized to edit this thread'}), 403

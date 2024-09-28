@@ -46,9 +46,6 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
                 </div>
               </div>
             </a>
-
-            
-
           </div>
           {% endfor %} {% else %}
           <div class="no-threads">
@@ -71,31 +68,65 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
           >
             <i class="fas fa-edit fa-xl grey-icon"></i>
           </button>
-            <button
-              class="btn btn-sm btn-link delete-thread mb-5 ms-2"
-              data-thread-id="{{ selected_thread.id }}"
-            >
+          <button
+            class="btn btn-sm btn-link delete-thread mb-5 ms-2"
+            data-thread-id="{{ selected_thread.id }}"
+          >
             <i class="fas fa-trash fa-xl grey-icon"></i>
-            </button>
+          </button>
           {% endif %}
         </div>
-        <div class="message-item">
-          <p>
-            <strong>{{ selected_thread.creator }}</strong> {{
-            selected_thread.content }}
-          </p>
-          <p><small>{{ selected_thread.created_at }}</small></p>
-          <hr />
-        </div>
-
-        <div class="messages-list mt-4">
-          {% if messages_in_thread %} {% for message in messages_in_thread %}
+        <div id="thread-content">
           <div class="message-item">
-            <p><strong>{{ message.creator }}</strong> {{ message.content }}</p>
-            <p><small>{{ message.created_at }}</small></p>
+            <p>
+              <strong>{{ selected_thread.creator }}</strong> {{
+              selected_thread.content }}
+            </p>
+            <p><small>{{ selected_thread.created_at }}</small></p>
             <hr />
           </div>
-          {% endfor %} {% endif %}
+
+          <div class="messages-list mt-4">
+            {% if messages_in_thread %} {% for message in messages_in_thread %}
+            <div class="message-item">
+              <p>
+                <strong>{{ message.creator }}</strong> {{ message.content }}
+              </p>
+              <p><small>{{ message.created_at }}</small></p>
+              <hr />
+            </div>
+            {% endfor %} {% endif %}
+          </div>
+        </div>
+
+        <div id="edit-thread-form" class="d-none">
+          <form id="edit-form">
+            <div class="mb-3">
+              <label for="edit-title" class="form-label">Title</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-title"
+                name="title"
+                value="{{ selected_thread.title }}"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="edit-content" class="form-label">Content</label>
+              <textarea
+                class="form-control"
+                id="edit-content"
+                name="content"
+                rows="4"
+              >
+{{ selected_thread.content }}</textarea
+              >
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" id="cancel-edit" class="btn btn-secondary">
+              Cancel
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -177,6 +208,46 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
           });
       }
     });
+  });
+
+  document.getElementById("edit-button").addEventListener("click", function () {
+    document.getElementById("thread-content").classList.add("d-none");
+    document.getElementById("edit-thread-form").classList.remove("d-none");
+  });
+
+  document.getElementById("cancel-edit").addEventListener("click", function () {
+    document.getElementById("edit-thread-form").classList.add("d-none");
+    document.getElementById("thread-content").classList.remove("d-none");
+  });
+
+  document.getElementById("edit-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const threadId = "{{ selected_thread.id }}";
+    const updatedTitle = document.getElementById("edit-title").value;
+    const updatedContent = document.getElementById("edit-content").value;
+
+    fetch(`/update-thread/${threadId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: updatedTitle,
+        content: updatedContent,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          location.reload();
+        } else {
+          alert("Error updating the thread");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   });
 </script>
 {% endif %} {% endblock %}
