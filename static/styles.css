@@ -104,3 +104,11 @@ footer {
 .grey-icon {
     color: grey;
 }
+
+.category-title {
+    margin-left: 50px;
+}
+
+.small {
+    font-size: smaller;
+}

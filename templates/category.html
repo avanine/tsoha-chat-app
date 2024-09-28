@@ -15,7 +15,7 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
       </a>
     </div>
     <div class="col-8 my-2">
-      <h1 class="text-start">{{ category.title }}</h1>
+      <h1 class="text-start category-title">{{ category.title }}</h1>
     </div>
   </div>
   <div class="row my-5">
@@ -82,7 +82,10 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
               <strong>{{ selected_thread.creator }}</strong> {{
               selected_thread.content }}
             </p>
-            <p><small>{{ selected_thread.created_at }}</small></p>
+            <p
+              class="thread-date small"
+              data-date="{{ selected_thread.created_at }}"
+            ></p>
             <hr />
           </div>
 
@@ -92,7 +95,10 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
               <p>
                 <strong>{{ message.creator }}</strong> {{ message.content }}
               </p>
-              <p><small>{{ message.created_at }}</small></p>
+              <p
+                class="thread-date small"
+                data-date="{{ message.created_at }}"
+              ></p>
               <hr />
             </div>
             {% endfor %} {% endif %}
@@ -248,6 +254,24 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
       .catch((error) => {
         console.error("Error:", error);
       });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const dateElements = document.querySelectorAll(".thread-date");
+
+    dateElements.forEach(function (element) {
+      const rawDate = element.getAttribute("data-date");
+      const formattedDate = new Date(rawDate).toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      });
+
+      element.textContent = formattedDate;
+    });
   });
 </script>
 {% endif %} {% endblock %}
