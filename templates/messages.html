@@ -1,0 +1,28 @@
+<div id="thread-content">
+  <div class="message-item speech-bubble">
+    <p>
+      <strong>{{ selected_thread.creator }}</strong> {{ selected_thread.content
+      }} {% if selected_thread.last_modified %}
+      <span class="edited-tag"> (Edited)</span>
+      {% endif %}
+    </p>
+    <p
+      class="thread-date small"
+      data-date="{{ selected_thread.created_at }}"
+    ></p>
+  </div>
+
+  <div class="messages-list mt-4">
+    {% if messages_in_thread %} {% for message in messages_in_thread %}
+    <div class="message-item speech-bubble">
+      <p>
+        <strong>{{ message.creator }}</strong> {{ message.content }} {% if
+        message.last_modified %}
+        <span class="edited-tag"> (Edited)</span>
+        {% endif %}
+      </p>
+      <p class="thread-date small" data-date="{{ message.created_at }}"></p>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+</div>
