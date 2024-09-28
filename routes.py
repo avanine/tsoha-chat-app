@@ -5,6 +5,7 @@ import login
 import category
 import user
 import thread
+import message
 
 @app.route("/")
 def index():
@@ -45,9 +46,11 @@ def category_page(category_id, thread_id):
     threads = thread.fetch_threads(category_id)
     if not thread_id and threads:
         selected_thread = threads[0]
+        messages_in_thread = message.fetch_messages(selected_thread.id)
     else:
         selected_thread = thread.get_thread_by_id(thread_id) if thread_id else None
-    return render_template('category.html', category=selected_category, threads=threads, selected_thread=selected_thread)
+        messages_in_thread = message.fetch_messages(thread_id) if thread_id else []
+    return render_template('category.html', category=selected_category, threads=threads, selected_thread=selected_thread, messages_in_thread=messages_in_thread)
 
 @app.route('/delete-category/<int:category_id>', methods=['PATCH'])
 def delete_category(category_id):

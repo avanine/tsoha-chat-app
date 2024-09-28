@@ -25,15 +25,14 @@ def fetch_threads(category_id):
 def get_thread_by_id(thread_id):
     thread = db.session.execute(text('''
         SELECT 
-            id, 
-            title, 
-            content, 
-            user_id, 
-            category_id, 
-            visible, 
-            created_at 
-        FROM threads 
-        WHERE id = :thread_id
+            t.id, 
+            t.title, 
+            t.content, 
+            t.created_at, 
+            u.username AS creator
+        FROM threads t
+        JOIN users u ON t.user_id = u.id
+        WHERE t.id = :thread_id
     '''), {"thread_id": thread_id}).fetchone()
     return thread
 
