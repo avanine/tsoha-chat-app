@@ -1,29 +1,41 @@
-{% extends "layout.html" %} {% block content %} {% if session.username %}
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    <div class="container mt-4">
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">{{ message }}</div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
+{% extends "layout.html" %} {% block content %} {% if session.username %} {%
+with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+<div class="container mt-4">
+  {% for category, message in messages %}
+  <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %} {% endwith %}
 
 <div class="container">
   <div class="row">
-    <div class="col-4 my-5">
+    <div class="col-4 my-4">
+      <a href="/dashboard">
+        <i class="fas fa-arrow-left"></i> Back to Categories
+      </a>
+    </div>
+    <div class="col-8 my-2">
+      <h1 class="text-start">{{ category.title }}</h1>
+    </div>
+  </div>
+  <div class="row my-5">
+    <div class="col-4">
       <div class="threads-list">
-        <div class="threads-header">
-          <a href="/dashboard">
-            <i class="fas fa-arrow-left"></i> Back to Categories
-          </a>
-          <button type="button" class="btn btn-primary ms-4" data-bs-toggle="modal" data-bs-target="#createThreadModal">
-            Create New Thread
-          </button>
-        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#createThreadModal"
+        >
+          Create New Thread
+        </button>
+
         <div class="list-group my-4">
           {% if threads %} {% for thread in threads %}
-          <a href="/category/{{ category.id }}/thread/{{ thread.id }}" class="list-group-item list-group-item-action {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}">
+          <a
+            href="/category/{{ category.id }}/thread/{{ thread.id }}"
+            class="list-group-item list-group-item-action {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}"
+          >
             <div>{{ thread.title }}</div>
             <div>{{ thread.message_count }} messages</div>
           </a>
@@ -36,34 +48,60 @@
       </div>
     </div>
     <div class="col-8">
-      <div class="container my-5">
+      <div class="container">
         <h2>{{ selected_thread.title }}</h2>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="createThreadModal" tabindex="-1" aria-labelledby="createThreadModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createThreadModalLabel">Create New Thread</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-category-id="{{ category['category_id'] }}"></button>
-        </div>
-        <div class="modal-body">
-          <form action="/category/{{ category.id }}/create-thread" method="POST">
-            <div class="mb-3">
-              <label for="title" class="form-label">Title</label>
-              <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-            <div class="mb-3">
-              <label for="content" class="form-label">Content</label>
-              <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Create Thread</button>
-          </form>
-        </div>
+<div
+  class="modal fade"
+  id="createThreadModal"
+  tabindex="-1"
+  aria-labelledby="createThreadModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createThreadModalLabel">
+          Create New Thread
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          data-category-id="{{ category['category_id'] }}"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form action="/category/{{ category.id }}/create-thread" method="POST">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea
+              class="form-control"
+              id="content"
+              name="content"
+              rows="4"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Thread</button>
+        </form>
       </div>
     </div>
   </div>
+</div>
 {% endif %} {% endblock %}
