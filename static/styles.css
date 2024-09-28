@@ -18,9 +18,9 @@ footer {
     padding: 20px;
 }
 
-.btn-primary, .btn-primary:hover {
-    background-color: pink;
-    border-color: pink;
+.btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: pink !important;
+    border-color: pink !important;
 }
 
 .form-check-input:checked {
@@ -96,6 +96,7 @@ footer {
     background-color: #f0f0f0 !important;
 }
 
-.active {
+.list-group-item.active {
     background-color: pink !important;
+    border-color: pink !important;
 }

@@ -59,3 +59,7 @@ def delete_category(category_id):
 @app.route('/category/<int:category_id>/create-thread', methods=['POST'])
 def create_thread(category_id):
     return thread.create_thread(category_id)
+
+@app.route('/delete-thread/<int:thread_id>', methods=['PATCH'])
+def delete_thread(thread_id):
+    return thread.delete_thread(thread_id)

@@ -89,6 +89,8 @@ def get_category(category_id):
     return category
 
 def delete_category(category_id):
+    if 'username' not in session:
+        return redirect("/login")
     try:
         with db.session.begin():
             sql = text("UPDATE categories SET visible = FALSE WHERE id = :category_id")

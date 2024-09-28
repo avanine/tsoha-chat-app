@@ -1,3 +1,4 @@
+import logging
 from flask import session, request, flash, redirect, url_for
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
@@ -8,6 +9,7 @@ def fetch_threads(category_id):
         SELECT
             t.id,
             t.title,
+            t.user_id,
             COUNT(m.id) AS message_count
         FROM
             threads t
@@ -74,3 +76,18 @@ def create_thread(category_id):
 
     flash("Error creating the thread.", "danger")
     return redirect(url_for('category_page', category_id=category_id))
+
+def delete_thread(thread_id):
+    if 'username' not in session:
+        return redirect("/login")
+    try:
+        sql = text('UPDATE threads SET visible = FALSE WHERE id = :thread_id')
+        db.session.execute(sql, {'thread_id': thread_id})
+        db.session.commit()
+        flash("Thread deleted successfully.", "success")
+        return {'success': True}
+    except SQLAlchemyError as e:
+        logging.error("Database error: %s", e)
+        db.session.rollback()
+        flash("You are not authorized to delete this thread.", "danger")
+        return {'success': False, 'message': 'An error occurred while deleting the thread'}

@@ -32,13 +32,32 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
 
         <div class="list-group my-4">
           {% if threads %} {% for thread in threads %}
-          <a
-            href="/category/{{ category.id }}/thread/{{ thread.id }}"
-            class="list-group-item list-group-item-action {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}"
+          <div
+            class="d-flex justify-content-between align-items-center list-group-item {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}"
           >
-            <div>{{ thread.title }}</div>
-            <div>{{ thread.message_count }} message(s)</div>
-          </a>
+            <a
+              href="/category/{{ category.id }}/thread/{{ thread.id }}"
+              class="flex-grow-1"
+            >
+              <div>
+                <div>{{ thread.title }}</div>
+                <div class="text-muted">
+                  {{ thread.message_count }} message(s)
+                </div>
+              </div>
+            </a>
+            {% if thread.user_id == session.user_id %}
+            <div class="ms-3">
+              <button
+                class="btn btn-dark btn-sm delete-thread"
+                data-thread-id="{{ thread.id }}"
+              >
+                Delete
+              </button>
+            </div>
+
+            {% endif %}
+          </div>
           {% endfor %} {% else %}
           <div class="no-threads">
             <p>No threads yet.</p>
@@ -63,14 +82,11 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
         <div class="messages-list mt-4">
           {% if messages_in_thread %} {% for message in messages_in_thread %}
           <div class="message-item">
-            <p>
-              <strong>{{ message.creator }}</strong> {{ message.content }}
-            </p>
+            <p><strong>{{ message.creator }}</strong> {{ message.content }}</p>
             <p><small>{{ message.created_at }}</small></p>
             <hr />
           </div>
-          {% endfor %}
-          {% endif %}
+          {% endfor %} {% endif %}
         </div>
       </div>
     </div>
@@ -126,4 +142,32 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
     </div>
   </div>
 </div>
+
+<script>
+  document.querySelectorAll(".delete-thread").forEach(function (button) {
+    button.addEventListener("click", function (event) {
+      const threadId = this.getAttribute("data-thread-id");
+
+      if (confirm("Are you sure you want to delete this thread?")) {
+        fetch(`/delete-thread/${threadId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              location.reload();
+            } else {
+              alert("Error deleting thread");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    });
+  });
+</script>
 {% endif %} {% endblock %}
