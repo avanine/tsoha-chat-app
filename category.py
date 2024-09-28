@@ -9,8 +9,8 @@ def fetch_categories(user_id):
         SELECT
             c.id AS category_id, 
             c.title AS category_name,
-            COUNT(DISTINCT t.id) AS thread_count,
-            COUNT(m.id) AS message_count,
+            COUNT(DISTINCT t.id) FILTER (WHERE t.visible = TRUE) AS thread_count,
+            COUNT(m.id) FILTER (WHERE m.visible = TRUE) AS message_count,
             MAX(m.created_at) AS last_message_timestamp
         FROM 
             categories c
