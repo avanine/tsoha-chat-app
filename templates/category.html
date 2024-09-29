@@ -15,7 +15,7 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
       </a>
     </div>
     <div class="col-8 my-2">
-      <h1 class="text-start">{{ category.title }}</h1>
+      <h1 class="text-start category-title">{{ category.title }}</h1>
     </div>
   </div>
   <div class="row my-5">
@@ -30,7 +30,7 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
           Create New Thread
         </button>
 
-        <div class="list-group my-4">
+        <div class="list-group my-4 scrollable-container">
           {% if threads %} {% for thread in threads %}
           <div
             class="d-flex justify-content-between align-items-center list-group-item {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}"
@@ -77,177 +77,182 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
           {% endif %}
         </div>
         <div id="thread-content">
-          <div class="message-item">
-            <p>
-              <strong>{{ selected_thread.creator }}</strong> {{
-              selected_thread.content }}
-            </p>
-            <p><small>{{ selected_thread.created_at }}</small></p>
-            <hr />
+          <div class="scrollable-container">
+            <div class="speech-bubble thread-content">
+              <p>
+                <strong>{{ selected_thread.creator }}</strong> {{
+                selected_thread.content }} {% if selected_thread.last_modified
+                %}
+                <span class="edited-tag"> (Edited)</span>
+                {% endif %}
+              </p>
+              <p
+                class="thread-date small"
+                data-date="{{ selected_thread.created_at }}"
+              ></p>
+            </div>
+            {% include "messages.html" %}
           </div>
 
-          <div class="messages-list mt-4">
-            {% if messages_in_thread %} {% for message in messages_in_thread %}
-            <div class="message-item">
-              <p>
-                <strong>{{ message.creator }}</strong> {{ message.content }}
-              </p>
-              <p><small>{{ message.created_at }}</small></p>
-              <hr />
-            </div>
-            {% endfor %} {% endif %}
+          <div id="edit-thread-form" class="d-none">
+            <form id="edit-form">
+              <div class="mb-3">
+                <label for="edit-title" class="form-label">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="edit-title"
+                  name="title"
+                  value="{{ selected_thread.title }}"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="edit-content" class="form-label">Content</label>
+                <textarea
+                  class="form-control"
+                  id="edit-content"
+                  name="content"
+                  rows="4"
+                >
+{{ selected_thread.content }}</textarea
+                >
+              </div>
+              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="button" id="cancel-edit" class="btn btn-secondary">
+                Cancel
+              </button>
+            </form>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div id="edit-thread-form" class="d-none">
-          <form id="edit-form">
+  <div
+    class="modal fade"
+    id="createThreadModal"
+    tabindex="-1"
+    aria-labelledby="createThreadModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createThreadModalLabel">
+            Create New Thread
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            data-category-id="{{ category['category_id'] }}"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form
+            action="/category/{{ category.id }}/create-thread"
+            method="POST"
+          >
             <div class="mb-3">
-              <label for="edit-title" class="form-label">Title</label>
+              <label for="title" class="form-label">Title</label>
               <input
                 type="text"
                 class="form-control"
-                id="edit-title"
+                id="title"
                 name="title"
-                value="{{ selected_thread.title }}"
+                required
               />
             </div>
             <div class="mb-3">
-              <label for="edit-content" class="form-label">Content</label>
+              <label for="content" class="form-label">Content</label>
               <textarea
                 class="form-control"
-                id="edit-content"
+                id="content"
                 name="content"
                 rows="4"
-              >
-{{ selected_thread.content }}</textarea
-              >
+                required
+              ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" id="cancel-edit" class="btn btn-secondary">
-              Cancel
-            </button>
+            <button type="submit" class="btn btn-primary">Create Thread</button>
           </form>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div
-  class="modal fade"
-  id="createThreadModal"
-  tabindex="-1"
-  aria-labelledby="createThreadModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createThreadModalLabel">
-          Create New Thread
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-          data-category-id="{{ category['category_id'] }}"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form action="/category/{{ category.id }}/create-thread" method="POST">
-          <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input
-              type="text"
-              class="form-control"
-              id="title"
-              name="title"
-              required
-            />
-          </div>
-          <div class="mb-3">
-            <label for="content" class="form-label">Content</label>
-            <textarea
-              class="form-control"
-              id="content"
-              name="content"
-              rows="4"
-              required
-            ></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Create Thread</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+  <script>
+    document.querySelectorAll(".delete-thread").forEach(function (button) {
+      button.addEventListener("click", function (event) {
+        const threadId = this.getAttribute("data-thread-id");
 
-<script>
-  document.querySelectorAll(".delete-thread").forEach(function (button) {
-    button.addEventListener("click", function (event) {
-      const threadId = this.getAttribute("data-thread-id");
+        if (confirm("Are you sure you want to delete this thread?")) {
+          fetch(`/delete-thread/${threadId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                location.reload();
+              } else {
+                alert("Error deleting thread");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      });
+    });
 
-      if (confirm("Are you sure you want to delete this thread?")) {
-        fetch(`/delete-thread/${threadId}`, {
+    document
+      .getElementById("edit-button")
+      .addEventListener("click", function () {
+        document.getElementById("thread-content").classList.add("d-none");
+        document.getElementById("edit-thread-form").classList.remove("d-none");
+      });
+
+    document
+      .getElementById("cancel-edit")
+      .addEventListener("click", function () {
+        document.getElementById("edit-thread-form").classList.add("d-none");
+        document.getElementById("thread-content").classList.remove("d-none");
+      });
+
+    document
+      .getElementById("edit-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const threadId = "{{ selected_thread.id }}";
+        const updatedTitle = document.getElementById("edit-title").value;
+        const updatedContent = document.getElementById("edit-content").value;
+
+        fetch(`/update-thread/${threadId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            title: updatedTitle,
+            content: updatedContent,
+          }),
         })
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
               location.reload();
             } else {
-              alert("Error deleting thread");
+              alert("Error updating the thread");
             }
           })
           .catch((error) => {
             console.error("Error:", error);
           });
-      }
-    });
-  });
-
-  document.getElementById("edit-button").addEventListener("click", function () {
-    document.getElementById("thread-content").classList.add("d-none");
-    document.getElementById("edit-thread-form").classList.remove("d-none");
-  });
-
-  document.getElementById("cancel-edit").addEventListener("click", function () {
-    document.getElementById("edit-thread-form").classList.add("d-none");
-    document.getElementById("thread-content").classList.remove("d-none");
-  });
-
-  document.getElementById("edit-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const threadId = "{{ selected_thread.id }}";
-    const updatedTitle = document.getElementById("edit-title").value;
-    const updatedContent = document.getElementById("edit-content").value;
-
-    fetch(`/update-thread/${threadId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: updatedTitle,
-        content: updatedContent,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          location.reload();
-        } else {
-          alert("Error updating the thread");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
       });
-  });
-</script>
-{% endif %} {% endblock %}
+  </script>
+  {% endif %} {% endblock %}
+</div>

@@ -1,3 +1,5 @@
+
+
 h1, h2, h3 {
     color: #36454F;
     text-align: center;
@@ -15,7 +17,8 @@ a:hover {
 
 footer {
     text-align: center;
-    padding: 20px;
+    background-color: white;
+    height: 70px;
 }
 
 .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
@@ -78,7 +81,7 @@ footer {
 .threads-list {
     border-right: 1px solid #ccc;
     padding-right: 20px;
-    height: 60vh;
+    height: 65vh;
 }
 
 .no-threads {
@@ -103,4 +106,71 @@ footer {
 
 .grey-icon {
     color: grey;
+}
+
+.category-title {
+    margin-left: 50px;
+}
+
+.small {
+    font-size: smaller;
+}
+
+.edited-tag {
+    font-style: italic;
+    color: gray;
+    font-size: smaller;
+}
+
+.speech-bubble {
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    padding: 15px 15px 5px 15px;
+    position: relative;
+    min-width: 60%;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.thread-content {
+    background-color: white;
+    border-radius: 10px;
+    border: grey solid 1px;
+}
+
+.new-message-form {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    padding: 10px 5px 80px 5px;
+}
+
+.new-message-form textarea {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+    resize: none;
+}
+
+.new-message-form button {
+    margin-top: 10px;
+}
+
+.scrollable-container {
+    height: calc(100vh - 330px);
+    overflow-y: auto;
+    padding-right: 10px;
+    padding-bottom: 20px;
+}
+
+.kebab-menu {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+}
+
+.message-sent {
+    margin-left: 40%;
 }
