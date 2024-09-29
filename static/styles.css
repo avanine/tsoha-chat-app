@@ -1,3 +1,5 @@
+
+
 h1, h2, h3 {
     color: #36454F;
     text-align: center;
@@ -141,7 +143,7 @@ footer {
     bottom: 0;
     width: 100%;
     background-color: white;
-    padding: 10px 5px 20px 5px;
+    padding: 10px 5px 80px 5px;
 }
 
 .new-message-form textarea {

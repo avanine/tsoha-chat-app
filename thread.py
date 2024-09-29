@@ -109,6 +109,7 @@ def update_thread(thread_id):
             sql = text('UPDATE threads SET title = :title, content = :content, last_modified = NOW() WHERE id = :thread_id')
             db.session.execute(sql, {'title': new_title, 'content': new_content, 'thread_id': thread_id})
             db.session.commit()
+            flash("Thread updated successfully.", "success")
             return jsonify({'success': True})
         except SQLAlchemyError as e:
             db.session.rollback()
