@@ -14,9 +14,13 @@
 
   <div class="messages-list mt-4">
     {% if messages_in_thread %} {% for message in messages_in_thread %}
-    <div class="speech-bubble {% if message.user_id == session.user_id %}message-sent{% endif %}">
+    <div
+      id="message-{{ message.id }}"
+      class="speech-bubble {% if message.user_id == session.user_id %}message-sent{% endif %}"
+    >
       <p>
-        <strong>{{ message.creator }}</strong> {{ message.content }} {% if
+        <strong>{{ message.creator }}</strong>
+        <span class="message-content">{{ message.content }}</span> {% if
         message.last_modified %}
         <span class="edited-tag"> (Edited)</span>
         {% endif %}
@@ -39,10 +43,20 @@
           aria-labelledby="messageMenu{{ message.id }}"
         >
           <li>
-            <a class="dropdown-item" href="#" onclick="">Edit</a>
+            <a
+              class="dropdown-item"
+              href="#"
+              onclick="editMessage('{{ message.id }}')"
+              >Edit</a
+            >
           </li>
           <li>
-            <a class="dropdown-item text-danger" href="#" onclick="">Delete</a>
+            <a
+              class="dropdown-item text-danger"
+              href="#"
+              onclick="deleteMessage('{{ message.id }}')"
+              >Delete</a
+            >
           </li>
         </ul>
       </div>
@@ -89,4 +103,80 @@
       element.textContent = formattedDate;
     });
   });
+
+  function editMessage(messageId) {
+    const messageContent = document.querySelector(
+      `#message-${messageId} .message-content`
+    );
+    const originalContent = messageContent.innerHTML;
+
+    messageContent.innerHTML = `
+        <textarea class="form-control edit-message-textarea" id="edit-message-${messageId}" rows="3">${originalContent}</textarea>
+        <button class="btn btn-primary save-edit" onclick="saveEditMessage(${messageId})">Save</button>
+        <button class="btn btn-secondary cancel-edit" onclick="cancelEditMessage(${messageId}, '${originalContent}')">Cancel</button>
+    `;
+  }
+
+  function saveEditMessage(messageId) {
+    const editedContent = document.querySelector(
+      `#edit-message-${messageId}`
+    ).value;
+
+    fetch(`/update-message/${messageId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: editedContent,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          const messageContent = document.querySelector(
+            `#message-${messageId} .message-content`
+          );
+          messageContent.innerHTML = editedContent;
+          location.reload();
+        } else {
+          alert("Error updating the message.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  function cancelEditMessage(messageId, originalContent) {
+    const messageContent = document.querySelector(
+      `#message-${messageId} .message-content`
+    );
+    messageContent.innerHTML = originalContent;
+  }
+
+  function deleteMessage(messageId) {
+    if (confirm("Are you sure you want to delete this message?")) {
+      fetch(`/delete-message/${messageId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            const messageElement = document.querySelector(
+              `#message-${messageId}`
+            );
+            messageElement.remove();
+          } else {
+            alert("Error deleting the message.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }
 </script>
