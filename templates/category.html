@@ -30,7 +30,7 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
           Create New Thread
         </button>
 
-        <div class="list-group my-4">
+        <div class="list-group my-4 scrollable-container">
           {% if threads %} {% for thread in threads %}
           <div
             class="d-flex justify-content-between align-items-center list-group-item {% if selected_thread and selected_thread.id == thread.id %}active{% endif %}"
