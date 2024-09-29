@@ -67,3 +67,7 @@ def delete_thread(thread_id):
 @app.route('/update-thread/<int:thread_id>', methods=['PATCH'])
 def update_thread(thread_id):
     return thread.update_thread(thread_id)
+
+@app.route('/category/<int:category_id>/thread/<int:thread_id>/add-message', methods=['POST'])
+def add_message(category_id, thread_id):
+    return message.add_message(category_id, thread_id)

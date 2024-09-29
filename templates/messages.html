@@ -1,5 +1,5 @@
 <div id="thread-content">
-  <div class="message-item speech-bubble">
+  <div class="speech-bubble thread-content">
     <p>
       <strong>{{ selected_thread.creator }}</strong> {{ selected_thread.content
       }} {% if selected_thread.last_modified %}
@@ -14,7 +14,7 @@
 
   <div class="messages-list mt-4">
     {% if messages_in_thread %} {% for message in messages_in_thread %}
-    <div class="message-item speech-bubble">
+    <div class="speech-bubble">
       <p>
         <strong>{{ message.creator }}</strong> {{ message.content }} {% if
         message.last_modified %}
@@ -26,3 +26,42 @@
     {% endfor %} {% endif %}
   </div>
 </div>
+
+<div class="new-message-form">
+  <form
+    action="/category/{{ category.id }}/thread/{{ selected_thread.id }}/add-message"
+    method="POST"
+  >
+    <div class="mt-5">
+      <textarea
+        class="form-control"
+        id="message-content"
+        name="content"
+        rows="3"
+        placeholder="Write a new message..."
+        required
+      ></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Send</button>
+  </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const dateElements = document.querySelectorAll(".thread-date");
+
+    dateElements.forEach(function (element) {
+      const rawDate = element.getAttribute("data-date");
+      const formattedDate = new Date(rawDate).toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      });
+
+      element.textContent = formattedDate;
+    });
+  });
+</script>

@@ -76,8 +76,7 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
           </button>
           {% endif %}
         </div>
-
-        {% include "messages.html" %}
+        <div class="scrollable-container">{% include "messages.html" %}</div>
 
         <div id="edit-thread-form" class="d-none">
           <form id="edit-form">
@@ -228,24 +227,6 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
       .catch((error) => {
         console.error("Error:", error);
       });
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const dateElements = document.querySelectorAll(".thread-date");
-
-    dateElements.forEach(function (element) {
-      const rawDate = element.getAttribute("data-date");
-      const formattedDate = new Date(rawDate).toLocaleString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      });
-
-      element.textContent = formattedDate;
-    });
   });
 </script>
 {% endif %} {% endblock %}
