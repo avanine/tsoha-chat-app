@@ -80,3 +80,41 @@ def delete_message(message_id):
         logging.error("Error deleting message: %s", e)
         flash("An error occurred while deleting the message.", "danger")
         return jsonify({'success': False, 'message': 'Error deleting message'})
+
+def search_messages():
+    query = request.args.get('query')
+    user_id = session.get('user_id')
+
+    if not query:
+        return jsonify([])
+
+    sql = text('''
+        SELECT 
+            m.id AS message_id, 
+            m.content AS message_content, 
+            t.id AS thread_id, 
+            t.title AS thread_title, 
+            c.id AS category_id, 
+            c.title AS category_title
+        FROM messages m
+        JOIN threads t ON m.thread_id = t.id
+        JOIN categories c ON t.category_id = c.id
+        LEFT JOIN private_categories_permissions p ON c.id = p.category_id
+        WHERE (m.content ILIKE :query)
+        AND (c.private = FALSE OR c.user_id = :user_id OR p.user_id = :user_id)
+        AND m.visible = TRUE
+    ''')
+
+    results = db.session.execute(sql, {
+        'query': f'%{query}%',
+        'user_id': user_id
+    }).fetchall()
+
+    return jsonify([{
+        'message_id': row.message_id,
+        'message_content': row.message_content,
+        'thread_id': row.thread_id,
+        'thread_title': row.thread_title,
+        'category_id': row.category_id,
+        'category_title': row.category_title
+    } for row in results])

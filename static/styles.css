@@ -185,7 +185,6 @@ footer {
     position: relative;
     padding: 12px 14px;
     border: 1px solid #dee2e6;
-    border-radius: 20px;
     border-left: none;
     outline: none;
 }
@@ -216,4 +215,15 @@ footer {
 .header-container {
     position: relative;
     padding: 20px;
+}
+
+.search-dropdown {
+    margin-top: 50px;
+    width: 250px;
+    border: #dee2e6 1px solid;
+    border-top: none;
+}
+
+input#search-input.search-input {
+    border-radius: 0 20px 20px 0;
 }
