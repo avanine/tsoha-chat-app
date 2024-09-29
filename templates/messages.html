@@ -14,7 +14,7 @@
 
   <div class="messages-list mt-4">
     {% if messages_in_thread %} {% for message in messages_in_thread %}
-    <div class="speech-bubble">
+    <div class="speech-bubble {% if message.user_id == session.user_id %}message-sent{% endif %}">
       <p>
         <strong>{{ message.creator }}</strong> {{ message.content }} {% if
         message.last_modified %}
@@ -22,6 +22,31 @@
         {% endif %}
       </p>
       <p class="thread-date small" data-date="{{ message.created_at }}"></p>
+      {% if message.user_id == session.user_id %}
+
+      <div class="dropdown kebab-menu">
+        <button
+          class="btn btn-link"
+          type="button"
+          id="messageMenu{{ message.id }}"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fas fa-ellipsis-v grey-icon"></i>
+        </button>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="messageMenu{{ message.id }}"
+        >
+          <li>
+            <a class="dropdown-item" href="#" onclick="">Edit</a>
+          </li>
+          <li>
+            <a class="dropdown-item text-danger" href="#" onclick="">Delete</a>
+          </li>
+        </ul>
+      </div>
+      {% endif %}
     </div>
     {% endfor %} {% endif %}
   </div>
@@ -47,7 +72,7 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     const dateElements = document.querySelectorAll(".thread-date");
 
     dateElements.forEach(function (element) {

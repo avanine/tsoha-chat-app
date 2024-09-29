@@ -9,7 +9,8 @@ def fetch_messages(thread_id):
         SELECT 
             m.id, 
             m.content, 
-            u.username AS creator, 
+            u.username AS creator,
+            m.user_id,
             m.created_at,
             m.last_modified
         FROM messages m
