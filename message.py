@@ -57,6 +57,7 @@ def update_message(message_id):
         db.session.execute(text("UPDATE messages SET content = :content, last_modified = NOW() WHERE id = :message_id AND user_id = :user_id"),
                            {'content': content, 'message_id': message_id, 'user_id': session['user_id']})
         db.session.commit()
+        flash("Message updated successfully!", "success")
         return jsonify({'success': True})
     except SQLAlchemyError as e:
         db.session.rollback()
@@ -72,6 +73,7 @@ def delete_message(message_id):
         db.session.execute(text("UPDATE messages SET visible = FALSE WHERE id = :message_id AND user_id = :user_id"),
                            {'message_id': message_id, 'user_id': session['user_id']})
         db.session.commit()
+        flash("Message deleted successfully!", "success")
         return jsonify({'success': True})
     except SQLAlchemyError as e:
         db.session.rollback()
