@@ -174,3 +174,63 @@ footer {
 .message-sent {
     margin-left: 40%;
 }
+
+.search-icon {
+    color: grey;
+    font-size: 20px;
+    margin-left: 5px;
+}
+
+.search-input {
+    position: relative;
+    padding: 12px 14px;
+    border: 1px solid #dee2e6;
+    border-left: none;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: grey;
+    opacity: 0.8;
+}
+
+.input-group-text {
+    border-radius: 20px;
+    border-right: none;
+    background-color: white;
+}
+
+.discussion-header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 58px;
+}
+
+.input-group {
+    position: absolute;
+    transform: translateX(75%);
+}
+
+.header-container {
+    position: relative;
+    padding: 20px;
+}
+
+.search-dropdown {
+    margin-top: 52px;
+    width: 250px;
+    border: #dee2e6 1px solid;
+}
+
+.dropdown-item {
+    width: 230px;
+}
+
+input#search-input.search-input {
+    border-radius: 0 20px 20px 0;
+}
+
+.save-edit, .cancel-edit, .edit-message-textarea {
+    margin-top: 10px;
+}

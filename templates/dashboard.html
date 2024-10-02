@@ -1,6 +1,29 @@
 {% extends "layout.html" %} {% block content %} {% if session.username %}
 <div class="container my-5">
-  <h2>Discussion Categories</h2>
+  <div
+    class="d-flex justify-content-between align-items-center header-container mb-5"
+  >
+    <h2 class="discussion-header">Discussion Categories</h2>
+    <div>
+      <div class="input-group">
+        <span class="input-group-text"
+          ><i class="fas fa-search search-icon"></i
+        ></span>
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Search messages"
+          aria-label="Search messages"
+        />
+
+        <div
+          id="search-results-dropdown"
+          class="dropdown-menu search-dropdown"
+        ></div>
+      </div>
+    </div>
+  </div>
   {% if session.role == 'admin' %}
   <button
     type="button"
@@ -189,6 +212,45 @@
           .catch((error) => {
             console.error("Error:", error);
           });
+      }
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search-input");
+    const searchResultsDropdown = document.getElementById(
+      "search-results-dropdown"
+    );
+
+    searchInput.addEventListener("input", function () {
+      const query = searchInput.value;
+
+      if (query.length >= 2) {
+        fetch(`/search-messages?query=${encodeURIComponent(query)}`)
+          .then((response) => response.json())
+          .then((data) => {
+            searchResultsDropdown.innerHTML = "";
+
+            if (data.length > 0) {
+              searchResultsDropdown.classList.add("show");
+              data.forEach((result) => {
+                const item = document.createElement("a");
+                item.className = "dropdown-item";
+                item.href = `/category/${result.category_id}/thread/${result.thread_id}?message_id=${result.message_id}`;
+                item.textContent = `${result.thread_title}: ${
+                  result.message_content.length > 16
+                    ? result.message_content.substring(0, 16) + "..."
+                    : result.message_content
+                }`;
+                searchResultsDropdown.appendChild(item);
+              });
+            } else {
+              searchResultsDropdown.classList.remove("show");
+            }
+          });
+      } else {
+        searchResultsDropdown.classList.remove("show");
+        searchResultsDropdown.innerHTML = "";
       }
     });
   });

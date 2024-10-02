@@ -79,3 +79,7 @@ def update_message(message_id):
 @app.route('/delete-message/<int:message_id>', methods=['PATCH'])
 def delete_message(message_id):
     return message.delete_message(message_id)
+
+@app.route('/search-messages', methods=['GET'])
+def search_messages():
+    return message.search_messages()
