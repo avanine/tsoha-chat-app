@@ -237,9 +237,11 @@
                 const item = document.createElement("a");
                 item.className = "dropdown-item";
                 item.href = `/category/${result.category_id}/thread/${result.thread_id}?message_id=${result.message_id}`;
-                item.textContent = `${
-                  result.thread_title
-                } - ${result.message_content.substring(0, 15)}`;
+                item.textContent = `${result.thread_title}: ${
+                  result.message_content.length > 16
+                    ? result.message_content.substring(0, 16) + "..."
+                    : result.message_content
+                }`;
                 searchResultsDropdown.appendChild(item);
               });
             } else {

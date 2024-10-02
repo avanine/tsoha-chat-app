@@ -218,12 +218,19 @@ footer {
 }
 
 .search-dropdown {
-    margin-top: 50px;
+    margin-top: 52px;
     width: 250px;
     border: #dee2e6 1px solid;
-    border-top: none;
+}
+
+.dropdown-item {
+    width: 230px;
 }
 
 input#search-input.search-input {
     border-radius: 0 20px 20px 0;
+}
+
+.save-edit, .cancel-edit, .edit-message-textarea {
+    margin-top: 10px;
 }
