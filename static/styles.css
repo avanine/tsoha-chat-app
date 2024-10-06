@@ -22,13 +22,13 @@ footer {
 }
 
 .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-    background-color: pink !important;
-    border-color: pink !important;
+    background-color: #F8C8DC !important;
+    border-color: #F8C8DC !important;
 }
 
 .form-check-input:checked {
-    background-color: pink;
-    border-color: pink;
+    background-color: #F8C8DC;
+    border-color: #F8C8DC;
 }
 
 .form-container {
@@ -60,11 +60,12 @@ footer {
 }
 
 .rounded-circle {
-    background-color: pink !important;
+    background-color: #F8C8DC !important;
 }
 
-.dropdown-menu {
+.profile-dropdown-menu {
     border: none;
+    padding: 0;
 }
 
 .dropdown-custom, .dropdown-custom:hover, .dropdown-custom:focus {
@@ -100,8 +101,8 @@ footer {
 }
 
 .list-group-item.active {
-    background-color: pink !important;
-    border-color: pink !important;
+    background-color: #F8C8DC !important;
+    border-color: #F8C8DC !important;
 }
 
 .grey-icon {
@@ -204,7 +205,7 @@ footer {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 58px;
+    margin-top: 55px;
 }
 
 .input-group {
@@ -214,7 +215,7 @@ footer {
 
 .header-container {
     position: relative;
-    padding: 20px;
+    padding: 0 20px 20px;
 }
 
 .search-dropdown {
@@ -302,4 +303,8 @@ input#search-input.search-input {
     color: white;
     border-radius: 5px;
     padding: 5px 10px;
+}
+
+.new-category-modal, .new-thread-modal {
+    padding: 10px;
 }
