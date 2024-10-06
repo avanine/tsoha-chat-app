@@ -24,53 +24,46 @@
       </div>
     </div>
   </div>
-  {% if session.role == 'admin' %}
-  <button
-    type="button"
-    class="btn btn-primary mb-3"
-    data-bs-toggle="modal"
-    data-bs-target="#createCategoryModal"
-  >
-    Create New Category
-  </button>
-  {% endif %}
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Category</th>
-        <th scope="col">Threads</th>
-        <th scope="col">Messages</th>
-        <th scope="col">Last Message</th>
-        <th scope="col"><i class="fa-solid fa-trash-can"></i></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for category in categories %}
-      <tr>
-        <td>
-          <a
-            href="{{ url_for('category_page', category_id=category['category_id']) }}"
-            >{{ category['category_name'] }}</a
-          >
-        </td>
-        <td>{{ category.thread_count }}</td>
-        <td>{{ category.message_count }}</td>
-        <td>
-          {{ category.last_message_timestamp.strftime('%Y-%m-%d %H:%M:%S') if
+
+  <div class="category-tiles-container">
+    {% if session.role == 'admin' %}
+    <button
+      type="button"
+      class="btn m-3 p-3 dashboard-tile new-category-tile"
+      data-bs-toggle="modal"
+      data-bs-target="#createCategoryModal"
+    >
+      <i class="fa-regular fa-plus fa-2xl p-1"></i>
+      Create New Category
+    </button>
+    {% endif %} {% for category in categories %}
+    <div class="dashboard-tile">
+      <a
+        href="{{ url_for('category_page', category_id=category['category_id']) }}"
+        class="category-tile-link"
+      >
+        <h4 class="dashboard-tile-title">{{ category['category_name'] }}</h4>
+        <p class="tile-info">
+          <strong>Threads:</strong> {{ category.thread_count }}
+        </p>
+        <p class="tile-info">
+          <strong>Messages:</strong> {{ category.message_count }}
+        </p>
+        <p class="tile-info">
+          <strong>Last Message:</strong>
+          {{ category.last_message_timestamp.strftime('%d/%m/%Y %H:%M') if
           category.last_message_timestamp else 'No messages yet' }}
-        </td>
-        <td>
-          <button
-            class="btn btn-dark btn-sm delete-category"
-            data-category-id="{{ category['category_id'] }}"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        </p>
+      </a>
+      <button
+        class="btn btn-dark btn-sm delete-category"
+        data-category-id="{{ category['category_id'] }}"
+      >
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
 </div>
 
 <!-- Modal -->
@@ -104,6 +97,7 @@
               id="title"
               name="title"
               required
+              maxlength="27"
             />
           </div>
           <div class="mb-3 form-check">
