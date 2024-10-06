@@ -56,6 +56,7 @@ Category pages display all threads within a category, with edit and delete optio
 - accessibility and style improvements here and there
 - better support for smaller screens (threads list)
 - highlight message that was found and opened through search
+- add checks for text lengths and show appropriate error messages
 
 ## How to Test
 
