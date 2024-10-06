@@ -7,7 +7,7 @@ A chat application built with Flask and PostgreSQL, featuring categories, thread
 ## Table of Contents
 
 - [Current Progress](#current-progress)
-- [Next Steps](#next-steps)
+- [Possible Improvements](#possible-improvements)
 - [How to Test](#how-to-test)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -19,29 +19,43 @@ Visitors are able to register either as an admin or regular user, and log in wit
 
 ![image](https://github.com/user-attachments/assets/0c2bffef-bf06-4913-87fa-fbe505c66a92)
 
-After logging in, there is a list of categories that the user has access to, including the amount of threads and messages, as well as the time of last message for each category. Clicking on the category name opens up the category page (not fully done yet). Admins can also see a button for creating a new category.
+After logging in, there is a dashboard with categories that the user has access to, including the amount of threads and messages, as well as the time of last message for each category. Clicking on the category name opens up the category page. Admins can also see a button for creating a new category.
 
-![image (2)](https://github.com/user-attachments/assets/87c1e7dd-0db5-420d-95ec-6141743517c9)
+![image](https://github.com/user-attachments/assets/a45ebad3-cc34-4faf-a152-5773c0509849)
+
+A delete-button will appear by hovering over the category tile (admin feature).
+
+![image](https://github.com/user-attachments/assets/07fc0ef0-dcef-4154-bb94-a916e5420d1b)
 
 All users can see their username and role, and log out using the menu at the top right of the page.
 
-![image (3)](https://github.com/user-attachments/assets/031d41d2-6e04-4c89-8489-aa66e8695ed9)
+![image](https://github.com/user-attachments/assets/b5712824-102c-4661-bf12-50d4d53a142d)
+
+All users can use the search bar to search for specific messages that they have access to.
+
+![image](https://github.com/user-attachments/assets/187ce0d2-4234-4497-a156-8967589b6605)
 
 Admin users can create a new public or private category.
 
-![image (4)](https://github.com/user-attachments/assets/1fb72457-e100-46c5-bcfe-92fa0515b7db)
+![image](https://github.com/user-attachments/assets/dce0aa53-2f6f-4fb3-a617-bc61ec24b9be)
 
 If they choose to create a private category, they are able to select the users that they want to give access to.
 
-![image (5)](https://github.com/user-attachments/assets/4cf3c0a9-8927-4697-a476-575b9bfde76f)
+![image](https://github.com/user-attachments/assets/98220929-79ce-43c4-b16d-40e3291d971e)
 
-## Next Steps
+Category pages display all threads within a category, with edit and delete options available for threads created by the logged-in user. In the main view, users can see all messages in the selected thread, along with a kebab menu for editing or deleting their own messages. An 'Edited' tag will appear on threads and messages that have been modified.
 
-- delete button for categories
-- view for a single category
-- functionality for adding threads and messages
-- editing and deleting threads and messages
-- search functionality
+![image](https://github.com/user-attachments/assets/7a8f3552-6bb3-48de-944c-59831806412d)
+
+## Possible improvements
+
+- nicer footer
+- reduce the amount of scroll bars in category page
+- after deleting a thread, it still shows in the main view until the user clicks somewhere else
+- separate .py-files into folders
+- accessibility and style improvements here and there
+- better support for smaller screens (threads list)
+- highlight message that was found and opened through search
 
 ## How to Test
 
