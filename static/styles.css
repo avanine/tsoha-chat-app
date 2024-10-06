@@ -234,3 +234,72 @@ input#search-input.search-input {
 .save-edit, .cancel-edit, .edit-message-textarea {
     margin-top: 10px;
 }
+
+.dashboard-tile {
+    margin: 15px;
+    border-radius: 15px;
+    background-color: #f0f0f5;
+    width: 280px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    padding: 10px;
+}
+
+.dashboard-tile:hover {
+    background-color: #d6d6e1;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+}
+
+.dashboard-tile-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.dashboard-tile:hover .dashboard-tile-title {
+    color: white;
+}
+
+.new-category-tile {
+    background-color: #FBD9E5;
+    width: 180px;
+}
+
+.new-category-tile:hover {
+    background-color: #F8C8DC;
+}
+
+.category-tiles-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tile-info {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.delete-category {
+    margin-top: 15px;
+    font-size: 12px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+}

@@ -86,10 +86,14 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
                 <span class="edited-tag"> (Edited)</span>
                 {% endif %}
               </p>
+              {% if selected_thread.created_at %}
               <p
                 class="thread-date small"
                 data-date="{{ selected_thread.created_at }}"
               ></p>
+              {% else %}
+              <p class="small">No date available</p>
+              {% endif %}
             </div>
             {% include "messages.html" %}
           </div>
