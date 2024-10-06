@@ -57,6 +57,7 @@ Category pages display all threads within a category, with edit and delete optio
 - better support for smaller screens (threads list)
 - highlight message that was found and opened through search
 - add checks for text lengths and show appropriate error messages
+- csrf tokens
 
 ## How to Test
 
