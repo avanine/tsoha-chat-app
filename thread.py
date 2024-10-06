@@ -14,7 +14,7 @@ def fetch_threads(category_id):
         FROM
             threads t
         LEFT JOIN
-            messages m ON t.id = m.thread_id
+            messages m ON t.id = m.thread_id AND m.visible = TRUE
         WHERE
             t.category_id = :category_id AND t.visible = TRUE
         GROUP BY
