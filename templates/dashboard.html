@@ -245,14 +245,15 @@
             if (data.length > 0) {
               searchResultsDropdown.classList.add("show");
               data.forEach((result) => {
+                let combinedText = `${result.thread_title}: ${result.message_content}`;
+                if (combinedText.length > 30) {
+                  combinedText = combinedText.substring(0, 27) + "...";
+                }
+
                 const item = document.createElement("a");
                 item.className = "dropdown-item";
                 item.href = `/category/${result.category_id}/thread/${result.thread_id}?message_id=${result.message_id}`;
-                item.textContent = `${result.thread_title}: ${
-                  result.message_content.length > 16
-                    ? result.message_content.substring(0, 16) + "..."
-                    : result.message_content
-                }`;
+                item.textContent = combinedText;
                 searchResultsDropdown.appendChild(item);
               });
             } else {
