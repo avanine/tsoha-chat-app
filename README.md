@@ -50,14 +50,11 @@ Category pages display all threads within a category, with edit and delete optio
 ## Possible improvements
 
 - nicer footer
-- reduce the amount of scroll bars in category page
 - after deleting a thread, it still shows in the main view until the user clicks somewhere else
 - separate .py-files into folders
-- accessibility and style improvements here and there
-- better support for smaller screens (threads list)
 - highlight message that was found and opened through search
-- add checks for text lengths and show appropriate error messages
-- csrf tokens
+- add checks for text lengths and show appropriate error messages ✅
+- csrf token ✅
 
 ## How to Test
 
