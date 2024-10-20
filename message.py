@@ -70,7 +70,10 @@ def update_message(message_id):
         abort(403)
 
     data = request.json
-    content = data.get("content")
+    content = data.get("content", "").strip()
+
+    if not content:
+        return jsonify({"success": False, "message": "Content cannot be empty"})
 
     try:
         db.session.execute(

@@ -135,8 +135,13 @@ def update_thread(thread_id):
 
     if thread_to_update and thread_to_update.user_id == session["user_id"]:
         data = request.json
-        new_title = data.get("title")
-        new_content = data.get("content")
+        new_title = data.get("title").strip()
+        new_content = data.get("content").strip()
+
+        if not new_title or not new_content:
+            return jsonify(
+                {"success": False, "message": "Title and content cannot be empty"}
+            ), 400
 
         try:
             sql = text(

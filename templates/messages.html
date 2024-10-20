@@ -112,6 +112,11 @@
       `#edit-message-${messageId}`
     ).value;
 
+    if (!editedContent) {
+      alert("Content cannot be empty.");
+      return;
+    }
+
     const csrfToken = document.getElementById("csrf_token").value;
 
     fetch(`/update-message/${messageId}`, {
