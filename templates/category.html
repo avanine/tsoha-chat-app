@@ -109,6 +109,7 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
                   id="edit-title"
                   name="title"
                   value="{{ selected_thread.title }}"
+                  maxlength="25"
                 />
               </div>
               <div class="mb-3">
@@ -177,6 +178,7 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
                 class="form-control"
                 id="title"
                 name="title"
+                maxlength="25"
                 required
               />
             </div>

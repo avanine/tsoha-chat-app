@@ -64,6 +64,10 @@ def create_thread(category_id):
         flash("Title and content are required to create a thread.", "danger")
         return redirect(url_for("category_page", category_id=category_id))
 
+    if len(title) > 25:
+        flash("Title cannot exceed 25 characters.", "danger")
+        return redirect(url_for("category_page", category_id=category_id))
+
     try:
         sql = text("""
             INSERT INTO threads (title, content, user_id, category_id, visible, created_at)
@@ -141,6 +145,14 @@ def update_thread(thread_id):
         if not new_title or not new_content:
             return jsonify(
                 {"success": False, "message": "Title and content cannot be empty"}
+            ), 400
+
+        if len(new_title) > 25:
+            return jsonify(
+                {
+                    "success": False,
+                    "message": "Title must be between 1 and 25 characters.",
+                }
             ), 400
 
         try:
