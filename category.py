@@ -1,11 +1,13 @@
 import logging
-from flask import session, request, jsonify, flash, redirect, url_for
+from flask import session, request, jsonify, flash, redirect, url_for, abort
 from sqlalchemy.sql import text
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
 
+
 def fetch_categories(user_id):
-    categories = db.session.execute(text('''
+    categories = db.session.execute(
+        text("""
         SELECT
             c.id AS category_id, 
             c.title AS category_name,
@@ -27,24 +29,32 @@ def fetch_categories(user_id):
             c.id, c.title
         ORDER BY 
             last_message_timestamp DESC;
-    '''), {'user_id': user_id}).fetchall()
+    """),
+        {"user_id": user_id},
+    ).fetchall()
 
     return categories
 
+
 def create_category():
-    if 'username' not in session:
-        return jsonify({'success': False, 'message': 'User not logged in'}), 401
+    if "username" not in session:
+        return jsonify({"success": False, "message": "User not logged in"}), 401
+
+    csrf_token = request.headers.get("X-CSRF-Token")
+
+    if session["csrf_token"] != csrf_token:
+        abort(403)
 
     data = request.json
     if not data:
-        return jsonify({'success': False, 'message': 'Invalid input data'}), 400
-    title = data.get('title')
-    private = data.get('private', False)
-    selected_users = data.get('users', [])
+        return jsonify({"success": False, "message": "Invalid input data"}), 400
+    title = data.get("title")
+    private = data.get("private", False)
+    selected_users = data.get("users", [])
     visible = True
 
     if not title:
-        return jsonify({'success': False, 'message': 'Title is required'}), 400
+        return jsonify({"success": False, "message": "Title is required"}), 400
 
     selected_users = [user_id for user_id in selected_users if user_id]
 
@@ -54,12 +64,15 @@ def create_category():
                 "INSERT INTO categories (title, user_id, private, visible) "
                 "VALUES (:title, :user_id, :private, :visible) RETURNING id"
             )
-            result = db.session.execute(sql, {
-                'title': title,
-                'user_id': session['user_id'],
-                'private': private,
-                'visible': visible
-            })
+            result = db.session.execute(
+                sql,
+                {
+                    "title": title,
+                    "user_id": session["user_id"],
+                    "private": private,
+                    "visible": visible,
+                },
+            )
             category_id = result.fetchone()[0]
 
             if private and selected_users:
@@ -68,36 +81,50 @@ def create_category():
                         "INSERT INTO private_categories_permissions (category_id, user_id) "
                         "VALUES (:category_id, :user_id)"
                     )
-                    db.session.execute(insert_permission_sql, {
-                        'category_id': category_id,
-                        'user_id': user_id
-                    })
+                    db.session.execute(
+                        insert_permission_sql,
+                        {"category_id": category_id, "user_id": user_id},
+                    )
 
         db.session.commit()
-        return jsonify({'success': True})
+        return jsonify({"success": True})
 
     except SQLAlchemyError as e:
         logging.error("Database error: %s", e)
         db.session.rollback()
-        return jsonify({'success': False, 'message': 'An error occurred'}), 500
+        return jsonify({"success": False, "message": "An error occurred"}), 500
+
 
 def get_category(category_id):
-    category = db.session.execute(text("SELECT * FROM categories WHERE id = :category_id"), {"category_id": category_id}).fetchone()
+    category = db.session.execute(
+        text("SELECT * FROM categories WHERE id = :category_id"),
+        {"category_id": category_id},
+    ).fetchone()
     if not category:
         flash("Category not found.", "danger")
-        return redirect(url_for('dashboard'))
+        return redirect(url_for("dashboard"))
     return category
 
+
 def delete_category(category_id):
-    if 'username' not in session:
+    if "username" not in session:
         return redirect("/login")
+
+    csrf_token = request.headers.get("X-CSRF-Token")
+
+    if session["csrf_token"] != csrf_token:
+        abort(403)
+
     try:
         with db.session.begin():
             sql = text("UPDATE categories SET visible = FALSE WHERE id = :category_id")
             db.session.execute(sql, {"category_id": category_id})
         db.session.commit()
-        return {'success': True}
+        return {"success": True}
     except SQLAlchemyError as e:
         logging.error("Database error: %s", e)
         db.session.rollback()
-        return {'success': False, 'message': 'An error occurred while deleting the category'}
+        return {
+            "success": False,
+            "message": "An error occurred while deleting the category",
+        }

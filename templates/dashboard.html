@@ -133,11 +133,21 @@
         <button type="submit" class="btn btn-primary" id="saveCategoryBtn">
           Save Category
         </button>
+        <input
+          type="hidden"
+          id="csrf_token"
+          name="csrf_token"
+          value="{{ session.csrf_token }}"
+        />
       </div>
     </div>
   </div>
 </div>
 <script>
+  function getCsrfToken() {
+    return document.getElementById("csrf_token").value;
+  }
+
   document.getElementById("private").addEventListener("change", function () {
     const userSelectContainer = document.getElementById("userSelectContainer");
     if (this.checked) {
@@ -160,6 +170,8 @@
         .map((option) => option.value)
         .filter((userId) => userId);
 
+      const csrfToken = getCsrfToken();
+
       const data = {
         title: title,
         private: isPrivate,
@@ -170,6 +182,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
         },
         body: JSON.stringify(data),
       })
@@ -189,12 +202,14 @@
   document.querySelectorAll(".delete-category").forEach(function (button) {
     button.addEventListener("click", function (event) {
       const categoryId = this.getAttribute("data-category-id");
+      const csrfToken = getCsrfToken();
 
       if (confirm("Are you sure you want to delete this category?")) {
         fetch(`/delete-category/${categoryId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
           },
         })
           .then((response) => response.json())

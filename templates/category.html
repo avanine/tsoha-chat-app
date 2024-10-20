@@ -126,6 +126,12 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
               <button type="button" id="cancel-edit" class="btn btn-secondary">
                 Cancel
               </button>
+              <input
+                type="hidden"
+                id="csrf_token"
+                name="csrf_token"
+                value="{{ session.csrf_token }}"
+              />
             </form>
           </div>
         </div>
@@ -185,6 +191,11 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
               ></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Create Thread</button>
+            <input
+              type="hidden"
+              name="csrf_token"
+              value="{{ session.csrf_token }}"
+            />
           </form>
         </div>
       </div>
@@ -192,15 +203,20 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
   </div>
 
   <script>
+    function getCsrfToken() {
+      return document.getElementById("csrf_token").value;
+    }
     document.querySelectorAll(".delete-thread").forEach(function (button) {
       button.addEventListener("click", function (event) {
         const threadId = this.getAttribute("data-thread-id");
+        const csrfToken = getCsrfToken();
 
         if (confirm("Are you sure you want to delete this thread?")) {
           fetch(`/delete-thread/${threadId}`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
+              "X-CSRF-Token": csrfToken,
             },
           })
             .then((response) => response.json())
@@ -240,11 +256,13 @@ with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
         const threadId = "{{ selected_thread.id }}";
         const updatedTitle = document.getElementById("edit-title").value;
         const updatedContent = document.getElementById("edit-content").value;
+        const csrfToken = getCsrfToken();
 
         fetch(`/update-thread/${threadId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
           },
           body: JSON.stringify({
             title: updatedTitle,
