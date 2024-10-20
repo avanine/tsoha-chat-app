@@ -48,7 +48,15 @@ def create_category():
     data = request.json
     if not data:
         return jsonify({"success": False, "message": "Invalid input data"}), 400
+
     title = data.get("title")
+    if len(title) > 27:
+        return jsonify(
+            {
+                "success": False,
+                "message": "Title must be between 1 and 27 characters.",
+            }
+        ), 400
     private = data.get("private", False)
     selected_users = data.get("users", [])
     visible = True
