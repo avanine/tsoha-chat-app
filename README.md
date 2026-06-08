@@ -2,6 +2,8 @@
 
 ![Pylint](https://github.com/avanine/tsoha-chat-app/actions/workflows/pylint.yml/badge.svg)
 
+https://tsoha-chat-app.onrender.com/
+
 A chat application built with Flask and PostgreSQL, featuring categories, threads, and messages. Categories contain discussion threads, which consist of messages. Users must be logged in to view and participate in discussions. The app supports both regular users and administrators, with admins having additional privileges like managing categories and creating private categories.
 
 ## Table of Contents
